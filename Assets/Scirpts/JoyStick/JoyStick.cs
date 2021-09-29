@@ -12,6 +12,7 @@ public class JoyStick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     public bool nowDraging;
 
     public Action<bool> dragEvent = null;
+
     private float maxValue;
     public Vector3 direction { get; private set; }
     public Vector3 angle { get; private set; }
@@ -64,5 +65,6 @@ public class JoyStick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     {
         Stick.localPosition = Vector2.zero;
         nowDraging = false;
+        
     }
 }

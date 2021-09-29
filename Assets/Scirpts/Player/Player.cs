@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -37,7 +38,7 @@ public class Player : MonoBehaviour
     }
 
     public Action<bool> jumpEvent = null;
-
+    
     private void SetJumpEvent()
     {
         jumpEvent += Jump;
@@ -83,6 +84,7 @@ public class Player : MonoBehaviour
                     maxSpeed : rb.velocity.z < -maxSpeed ? 
                     -maxSpeed : rb.velocity.z);
             }
+            
         } 
     }
 
@@ -102,19 +104,15 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            RaycastHit raycastHit;
-            if ((Physics.Raycast(transform.position, Vector3.down, out raycastHit, 1.5f) ||
-                Physics.Raycast(transform.position + Vector3.up * 0.5f, Vector3.down, out raycastHit, 1.5f) ||
-                Physics.Raycast(transform.position + Vector3.down * 0.5f, Vector3.down, out raycastHit, 1.5f) ||
-                Physics.Raycast(transform.position + Vector3.left * 0.5f, Vector3.down, out raycastHit, 1.5f) ||
-                Physics.Raycast(transform.position + Vector3.right * 0.5f, Vector3.down, out raycastHit, 1.5f)) &&
-                rb.velocity.y == 0 &&
-                !playJump)
+            RaycastHit[] raycastHit = new RaycastHit[5];
+            if ((Physics.Raycast(transform.position, Vector3.down, out raycastHit[0], 1) ||
+                Physics.Raycast(transform.position + Vector3.forward / 2, Vector3.down, out raycastHit[1], 0.6f) ||
+                Physics.Raycast(transform.position + Vector3.back / 2, Vector3.down, out raycastHit[2], 0.6f) ||
+                Physics.Raycast(transform.position + Vector3.left / 2, Vector3.down, out raycastHit[3], 0.6f) ||
+                Physics.Raycast(transform.position + Vector3.right / 2, Vector3.down, out raycastHit[4], 0.6f)) &&
+                Mathf.Abs(rb.velocity.y) < 0.6f)
             {
-                if (raycastHit.transform.gameObject.CompareTag("Ground"))
-                {
-                    playJump = true;
-                }
+                playJump = true;
             }
         }
     }

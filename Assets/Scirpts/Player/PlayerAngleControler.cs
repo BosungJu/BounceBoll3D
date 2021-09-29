@@ -20,9 +20,10 @@ public class PlayerAngleControler : MonoBehaviour, IPointerDownHandler, IDragHan
         height = Screen.height;
     }
 
+    delegate bool f(int a, int b);
+
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(cam.transform.eulerAngles);
         player.transform.eulerAngles = playerAngle + new Vector3(0, -(eventData.position.x - startPos.x) / width * 360, 0);
         cam.transform.localEulerAngles = camAngle + new Vector3(-(eventData.position.y - startPos.y) / height * 360, 0, 0);
         //player.transform.eulerAngles = playerAngle + new Vector3(0, -(eventData.position.x - startPos.x) / width * 360, 0);
@@ -30,7 +31,6 @@ public class PlayerAngleControler : MonoBehaviour, IPointerDownHandler, IDragHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log(eventData.position);
         startPos = eventData.position;
         camAngle = new Vector3(cam.transform.localEulerAngles.x, cam.transform.localEulerAngles.y, 0);
         playerAngle = new Vector3(0, player.transform.eulerAngles.y, 0);
