@@ -26,13 +26,16 @@ public class PlayerAngleControler : MonoBehaviour, IPointerDownHandler, IDragHan
     {
         player.transform.eulerAngles = playerAngle + new Vector3(0, -(eventData.position.x - startPos.x) / width * 360, 0);
         cam.transform.localEulerAngles = camAngle + new Vector3(-(eventData.position.y - startPos.y) / height * 360, 0, 0);
+        cam.transform.localEulerAngles = new Vector3(Mathf.Clamp(cam.transform.localEulerAngles.x, -90, 90), 0, 0);
+        Debug.Log("OnDrag " + cam.transform.localEulerAngles.x.ToString());
         //player.transform.eulerAngles = playerAngle + new Vector3(0, -(eventData.position.x - startPos.x) / width * 360, 0);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         startPos = eventData.position;
-        camAngle = new Vector3(cam.transform.localEulerAngles.x, cam.transform.localEulerAngles.y, 0);
+        camAngle = new Vector3(cam.transform.localEulerAngles.x, 0, 0);
+        Debug.Log("Origin " + cam.transform.localEulerAngles.x.ToString());
         playerAngle = new Vector3(0, player.transform.eulerAngles.y, 0);
     }
 }
